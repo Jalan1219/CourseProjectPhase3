@@ -82,6 +82,54 @@ def GetFromDate():
     return fromdate 
 
 def ReadEmployeeInformation(fromdate):
+    EmpDetailList =[]
+    
+    file = open("employeeinfo.txt", "r")
+    data = file.readlines()
+    
+    condition = True
+    
+    if fromdate.upper() == 'ALL':
+        condition = False
+        
+    for employee in data:
+        employee = [x.strip() for x in employee.strip().split("|")]
+        
+        if not condition:
+            EmpDetailList.append([employee[0],  employee[1], employee[2], float(employee[3]), float(employee[4]), float(employee[5])])
+        else:
+            if fromdate == employee[0]:
+                EmpDetailList.append()
+                EmpDetailList.append([employee[0],  employee[1], employee[2], float(employee[3]), float(employee[4]), float(employee[5])])
+    return EmpDetailList
+
+if __name__ == "__main__":
+    EmpDetailList = []
+    EmpTotals = {}
+    
+    while True:
+        empname = GetEmpName()
+        if (empname.upper() == "END"):
+            break
+        fromdate, todate = GetDatesWorked()
+        hours = GetHoursWorked()
+        hourlyrate = GetHourlyRate()
+        taxrate = GetTaxRate()
+        
+        print()
+        
+        EmpDetail = [fromdate, todate, empname, hours, hourlyrate, taxrate]
+        WriteEmployeeInformation(EmpDetail)
+    print()
+    print()
+    fromdate = GetFromDate()
+    
+    EmpDetailList = ReadEmployeeInformation(fromdate)
+    
+    print()
+    printinfo(EmpDetailList)
+    print()
+    PrintTotals(EmpTotals) 
     
 
 
